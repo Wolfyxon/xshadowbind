@@ -81,5 +81,12 @@ void main_loop(AppContext *ctx) {
         return;
     }
 
+    if(ev.pressed) {
+        add_pressed_key(ctx, ev.code);
+    } else {
+        remove_pressed_key(ctx, ev.code);
+    }
+
+    print_pressed_keys(ctx);
     printf("%d\n", ev.code);
 }
