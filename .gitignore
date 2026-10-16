@@ -1,0 +1,6 @@
+xshadowbind
+
+*.tmp
+*~
+*.o
+*.d
