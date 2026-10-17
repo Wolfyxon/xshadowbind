@@ -6,14 +6,27 @@
 #include <X11/Xlib.h>
 
 #define MAX_COMBO_LENGTH 16
+#define MAX_BINDS 1024
+
+typedef struct {
+    int combo[MAX_COMBO_LENGTH];
+    size_t combo_len;
+    const char *command;
+} KeyBind;
 
 typedef struct {
     Display *x11_display;
     int x11_opcode;
-    int pressed_keys[MAX_COMBO_LENGTH];
-    int pressed_keys_len;
+
+    bool verbose;
     bool debug;
     bool abort_run;
+
+    int pressed_keys[MAX_COMBO_LENGTH];
+    int pressed_keys_len;
+
+    KeyBind binds[MAX_BINDS];
+    size_t binds_len;
 } AppContext;
 
 typedef struct {
