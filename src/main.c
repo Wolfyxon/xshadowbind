@@ -11,8 +11,7 @@ int main(int argc, char **argv) {
     }
 
     if(ctx.binds_len == 0) {
-        fprintf(stderr, "error: No valid keybinds configured.\n");
-        print_help();
+        fprintf(stderr, "error: No valid keybinds configured. Use --help to see help.\n");
         return 1;
     }
 
