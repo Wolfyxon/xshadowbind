@@ -30,3 +30,13 @@ Other applications have no idea about the combos, that's why this program has *s
 Since this program doesn't grab the keys, they will still be handled by other applications.
 
 For example if you bind `Control_L+F` (Left Ctrl + F) to a command, it will both run your configured command, but also still open a text search tool in a text editor application.
+
+
+## Building
+You need to have `make` and `gcc` installed on your system.
+
+Then you simply run
+```
+make
+```
+in the root directory of the project, and the compiled `xshadowbind` executable will appear.
