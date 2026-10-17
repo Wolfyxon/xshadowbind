@@ -139,6 +139,11 @@ void add_bind(AppContext *ctx, const char *combo, const char *command) {
         current_key = strtok(NULL, DELIM);
     }
 
+    if(get_bind(ctx, bind.combo, bind.combo_len) != NULL) {
+        fprintf(stderr, "error: A keybind is already configured for: %s.\n", combo);
+        return;
+    } 
+
     ctx->binds[ctx->binds_len++] = bind;
 
     if(ctx->verbose) {
@@ -150,6 +155,31 @@ void add_bind(AppContext *ctx, const char *combo, const char *command) {
 
         printf("command: %s\n", bind.command);
     }
+}
+
+KeyBind *get_bind(AppContext *ctx, int *keycodes, size_t keycodes_len) {
+    for(size_t bind_i = 0; bind_i < ctx->binds_len; bind_i++) {
+        KeyBind *bind = &ctx->binds[bind_i];
+
+        if(bind->combo_len != keycodes_len) {
+            continue;
+        }
+
+        bool matches = true;
+
+        for(size_t i = 0; i < keycodes_len; i++) {
+            if(bind->combo[i] != keycodes[i]) {
+                matches = false;
+                break;
+            } 
+        }
+
+        if(matches) {
+            return bind;
+        }
+    }
+
+    return NULL;
 }
 
 void print_help() {
@@ -180,7 +210,14 @@ void main_loop(AppContext *ctx) {
     } else {
         remove_pressed_key(ctx, ev.code);
     }
+    
+    KeyBind *current_bind = get_bind(ctx, ctx->pressed_keys, ctx->pressed_keys_len);
 
-    print_pressed_keys(ctx);
-    printf("%d\n", ev.code);
+    if(current_bind == NULL) {
+        return;
+    }
+
+    if(ctx->verbose) {
+        printf("info: Executing command: %s\n", current_bind->command);
+    }
 }
