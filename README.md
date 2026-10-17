@@ -1,5 +1,5 @@
 # XShadowBind
-A sneaky key bind solution for Linux Xorg/X11 that doesn't suck as much.
+A sneaky key bind solution for Linux Xorg/X11 that doesn't get blocked and doesn't mess with window focus.
 
 ## Example usage
 my_binds_script.sh
