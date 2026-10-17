@@ -16,6 +16,10 @@ int main(int argc, char **argv) {
         return 1;
     }
 
+    if(ctx.verbose) {
+        printf("info: Running main loop\n");
+    }
+
     while(true) {
         main_loop(&ctx);
     }
@@ -29,7 +33,13 @@ void parse_args(AppContext *ctx, int argc, char **argv) {
             print_help();
             exit(0);
         }
-        
+
+        if(strcmp(arg, "--verbose") == 0) {
+            ctx->verbose = true;
+            printf("info: Verbose logging enabled\n");
+            continue;
+        }
+
         if(strcmp(arg, "--check-key") == 0) {
             if(argc - 1 < i + 1) {
                 fprintf(stderr, "error: --check-key requires an argument.\n");
@@ -130,15 +140,26 @@ void add_bind(AppContext *ctx, const char *combo, const char *command) {
     }
 
     ctx->binds[ctx->binds_len++] = bind;
+
+    if(ctx->verbose) {
+        printf("info: Added bind: Keycodes: ");
+
+        for(size_t i = 0; i < bind.combo_len; i++) {
+            printf("%d ", bind.combo[i]);
+        }
+
+        printf("command: %s\n", bind.command);
+    }
 }
 
 void print_help() {
     puts("Usage: xshadowbind [OPTIONS]...");
     puts("");
     puts("Available options:");
-    puts("  --help:                  Shows this help");
-    puts("  --check-key: [key name]: Checks if a key is valid and returns its info.");
+    puts("  --help:                   Shows this help");
+    puts("  --check-key: [key name]:  Checks if a key is valid and returns its info.");
     puts("  --bind [combo] [command]: Binds a command to a key combination");
+    puts("  --verbose:                Enables verbose logging.");
     puts("");
     puts("Example:");
     puts("  xshadowbind \\");
