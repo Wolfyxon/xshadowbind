@@ -19,7 +19,7 @@ typedef struct {
     int x11_opcode;
 
     bool verbose;
-    bool debug;
+    bool no_exec;
     bool abort_run;
 
     int pressed_keys[MAX_COMBO_LENGTH];

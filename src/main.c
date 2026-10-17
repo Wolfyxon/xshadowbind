@@ -40,6 +40,11 @@ void parse_args(AppContext *ctx, int argc, char **argv) {
             continue;
         }
 
+        if(strcmp(arg, "--no-exec") == 0) {
+            ctx->no_exec = true;
+            continue;
+        }
+
         if(strcmp(arg, "--check-key") == 0) {
             if(argc - 1 < i + 1) {
                 fprintf(stderr, "error: --check-key requires an argument.\n");
@@ -189,6 +194,7 @@ void print_help() {
     puts("  --help:                   Shows this help");
     puts("  --check-key: [key name]:  Checks if a key is valid and returns its info.");
     puts("  --bind [combo] [command]: Binds a command to a key combination");
+    puts("  --no-exec:                Disables command execution and prints them instead. Useful for testing.");
     puts("  --verbose:                Enables verbose logging.");
     puts("");
     puts("Example:");
@@ -217,7 +223,27 @@ void main_loop(AppContext *ctx) {
         return;
     }
 
-    if(ctx->verbose) {
+    //memset(ctx->pressed_keys, 0, ctx->pressed_keys_len);
+
+    //ctx->pressed_keys_len = 0;
+
+    if(ctx->verbose && !ctx->no_exec) {
         printf("info: Executing command: %s\n", current_bind->command);
+    }
+
+    if(ctx->no_exec) {
+        printf("info: Would execute: %s\n", current_bind->command);
+        return;
+    }
+
+    int pid = fork();
+
+    if(pid < 0) {
+        fprintf(stderr, "error: Unable to create process to execute command.\n");
+        return;
+    }
+
+    if(pid == 0) { // process is the fork
+        exit(system(current_bind->command));
     }
 }
