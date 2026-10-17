@@ -201,6 +201,8 @@ void print_help() {
     puts("  --bind \"Super_L+Shift+Q\" \"shutdown now\" \\");
     puts("  --bind \"Alt+F4\" \"echo I am a stinker\"");
     puts("");
+    puts("For bugs and suggestions see:");
+    puts("https://github.com/Wolfyxon/xshadowbind");
 }
 
 void main_loop(AppContext *ctx) {
