@@ -188,12 +188,12 @@ KeyBind *get_bind(AppContext *ctx, int *keycodes, size_t keycodes_len) {
 }
 
 void print_help() {
-    puts("Usage: xshadowbind [OPTIONS]...");
+    puts("Usage: xshadowbind <OPTIONS>...");
     puts("");
     puts("Available options:");
     puts("  --help:                   Shows this help");
-    puts("  --check-key: [key name]:  Checks if a key is valid and returns its info.");
-    puts("  --bind [combo] [command]: Binds a command to a key combination");
+    puts("  --check-key: <key name>:  Checks if a key is valid and returns its info.");
+    puts("  --bind <combo> <command>: Binds a command to a key combination");
     puts("  --no-exec:                Disables command execution and prints them instead. Useful for testing.");
     puts("  --verbose:                Enables verbose logging.");
     puts("");
