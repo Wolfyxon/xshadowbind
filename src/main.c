@@ -198,7 +198,7 @@ void print_help() {
     puts("");
     puts("Example:");
     puts("  xshadowbind \\");
-    puts("  --bind \"Super_L+Shift+Q\" \"shutdown now\" \\");
+    puts("  --bind \"Super_L+Shift_L+Q\" \"shutdown now\" \\");
     puts("  --bind \"Alt+F4\" \"echo I am a stinker\"");
     puts("");
     puts("For bugs and suggestions see:");

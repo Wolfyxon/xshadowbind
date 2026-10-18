@@ -6,7 +6,7 @@ my_binds_script.sh
 ```
 xshadowbind \
   --bind Super_L+E thunar \
-  --bind Super_L+Shift+S "flameshot -gui -c -s" \
+  --bind Super_L+Shift_L+S "flameshot -gui -c -s" \
   --bind Super_L+L my_lockscreen_commab
 ```
 
