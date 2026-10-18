@@ -199,7 +199,7 @@ void print_help() {
     puts("Example:");
     puts("  xshadowbind \\");
     puts("  --bind \"Super_L+Shift_L+Q\" \"shutdown now\" \\");
-    puts("  --bind \"Alt+F4\" \"echo I am a stinker\"");
+    puts("  --bind \"Super_L+L\" my_lockscreen_command");
     puts("");
     puts("For bugs and suggestions see:");
     puts("https://github.com/Wolfyxon/xshadowbind");
