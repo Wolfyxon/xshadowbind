@@ -82,6 +82,7 @@ void check_key(AppContext *ctx, const char *key_name) {
 
     if(keysym == 0) {
         fprintf(stderr, "%s: UNKNOWN\n", key_name);
+        return;
     }
 
     int keycode = XKeysymToKeycode(ctx->x11_display, keysym);
