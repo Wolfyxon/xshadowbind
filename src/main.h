@@ -15,5 +15,6 @@ void print_help();
 void check_key(AppContext *ctx, const char *key_name);
 void add_bind(AppContext *ctx, const char *combo, const char *command);
 KeyBind *get_bind(AppContext *ctx, int *keycodes, size_t keycodes_len);
+void exec_bind(AppContext *ctx, KeyBind *bind);
 
 void main_loop(AppContext *ctx);

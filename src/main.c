@@ -212,6 +212,28 @@ void print_help() {
     puts("https://github.com/Wolfyxon/xshadowbind");
 }
 
+void exec_bind(AppContext *ctx, KeyBind *bind) {
+    if(ctx->verbose && !ctx->no_exec) {
+        printf("info: Executing command: %s\n", bind->command);
+    }
+
+    if(ctx->no_exec) {
+        printf("info: Would execute: %s\n", bind->command);
+        return;
+    }
+
+    int pid = fork();
+
+    if(pid < 0) {
+        fprintf(stderr, "error: Unable to create process to execute command.\n");
+        return;
+    }
+
+    if(pid == 0) { // process is the fork
+        exit(system(bind->command));
+    }
+}
+
 void main_loop(AppContext *ctx) {
     KeyEvent ev = x11_poll_key(ctx);
 
@@ -239,23 +261,5 @@ void main_loop(AppContext *ctx) {
         return;
     }
 
-    if(ctx->verbose && !ctx->no_exec) {
-        printf("info: Executing command: %s\n", current_bind->command);
-    }
-
-    if(ctx->no_exec) {
-        printf("info: Would execute: %s\n", current_bind->command);
-        return;
-    }
-
-    int pid = fork();
-
-    if(pid < 0) {
-        fprintf(stderr, "error: Unable to create process to execute command.\n");
-        return;
-    }
-
-    if(pid == 0) { // process is the fork
-        exit(system(current_bind->command));
-    }
+    exec_bind(ctx, current_bind);
 }
