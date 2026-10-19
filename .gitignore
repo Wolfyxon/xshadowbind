@@ -1,5 +1,6 @@
 xshadowbind
 
+.fuse_hidden*
 *.tmp
 *~
 *.o
