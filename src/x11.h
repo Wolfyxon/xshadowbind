@@ -14,3 +14,4 @@ void x11_init(AppContext *ctx);
 void x11_init_events(AppContext *ctx);
 
 KeyEvent x11_poll_key(AppContext *ctx); // blocking
+bool x11_has_lockscreen(AppContext *ctx);

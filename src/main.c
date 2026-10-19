@@ -39,6 +39,11 @@ void parse_args(AppContext *ctx, int argc, char **argv) {
             continue;
         }
 
+        if(strcmp(arg, "--no-lockscreen-check") == 0) {
+            ctx->no_lockscreen_check = true;
+            continue;
+        }
+
         if(strcmp(arg, "--no-exec") == 0) {
             ctx->no_exec = true;
             continue;
@@ -195,6 +200,7 @@ void print_help() {
     puts("  --check-key: <key name>:  Checks if a key is valid and returns its info.");
     puts("  --bind <combo> <command>: Binds a command to a key combination");
     puts("  --no-exec:                Disables command execution and prints them instead. Useful for testing.");
+    puts("  --no-lockscreen-check:    Disables lockscreen checking. Use this if the keybinds don't work.");
     puts("  --verbose:                Enables verbose logging.");
     puts("");
     puts("Example:");
@@ -225,9 +231,13 @@ void main_loop(AppContext *ctx) {
         return;
     }
 
-    //memset(ctx->pressed_keys, 0, ctx->pressed_keys_len);
-
-    //ctx->pressed_keys_len = 0;
+    if(!ctx->no_lockscreen_check && x11_has_lockscreen(ctx)) {
+        if(ctx->verbose) {
+            printf("info: Ignoring keybind, because a lockscreen was detected\n");
+        }
+        
+        return;
+    }
 
     if(ctx->verbose && !ctx->no_exec) {
         printf("info: Executing command: %s\n", current_bind->command);

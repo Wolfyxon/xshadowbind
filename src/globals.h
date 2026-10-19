@@ -20,6 +20,7 @@ typedef struct {
 
     bool verbose;
     bool no_exec;
+    bool no_lockscreen_check;
     bool abort_run;
 
     int pressed_keys[MAX_COMBO_LENGTH];

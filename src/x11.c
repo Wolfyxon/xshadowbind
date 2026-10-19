@@ -73,3 +73,85 @@ KeyEvent x11_poll_key(AppContext *ctx) {
 
     return res;
 }
+
+bool x11_is_window_fullscreen(AppContext *ctx, Window w) {
+    Window root = DefaultRootWindow(ctx->x11_display);
+
+    XWindowAttributes root_attr = {0};
+    XWindowAttributes attr = {0};
+    
+    XGetWindowAttributes(ctx->x11_display, root, &root_attr);
+    XGetWindowAttributes(ctx->x11_display, w, &attr);
+
+    if(attr.height == root_attr.height) {
+        return true;
+    }
+
+    return false;
+}
+
+bool x11_has_lockscreen(AppContext *ctx) {
+    Window root = XDefaultRootWindow(ctx->x11_display);
+
+    Window parent;
+
+    Window *windows;
+    unsigned int windows_len;
+
+    int status = XQueryTree(
+        ctx->x11_display, 
+        root,
+        &root, // root
+        &parent,  // parent
+        &windows, 
+        &windows_len
+    );
+    
+    if(status == 0) {
+        fprintf(stderr, "error: Failed to list windows.\n");
+        return false;
+    }
+
+    if(windows == NULL) {
+        fprintf(stderr, "error: Failed to list windows. Array is NULL.\n");
+        return false;
+    }
+
+    for(size_t i = 0; i < windows_len; i++) {
+        XWindowAttributes attr = {0};
+        Window window = windows[i];
+
+        int attr_status = XGetWindowAttributes(ctx->x11_display, window, &attr);
+        
+        if(!x11_is_window_fullscreen(ctx, window)) {
+            continue;
+        }
+        if(attr.map_state != IsViewable) {
+            continue;
+        } 
+
+        if(!attr.override_redirect) {
+            continue;
+        }
+
+        if(!attr.map_installed) {
+            continue;
+        }
+
+        /*
+        char *nam = malloc(1024);
+
+        XFetchName(ctx->x11_display, windows[i], &nam);
+        
+        if(nam != NULL) {
+            puts(nam);
+        }*/
+        
+        XFree(windows);
+        return true;
+    }
+
+    XFree(windows);
+
+    return false;
+}
