@@ -80,8 +80,13 @@ bool x11_is_window_fullscreen(AppContext *ctx, Window w) {
     XWindowAttributes root_attr = {0};
     XWindowAttributes attr = {0};
     
-    XGetWindowAttributes(ctx->x11_display, root, &root_attr);
-    XGetWindowAttributes(ctx->x11_display, w, &attr);
+    if(XGetWindowAttributes(ctx->x11_display, root, &root_attr) == 0) {
+        return false;
+    }
+
+    if(XGetWindowAttributes(ctx->x11_display, w, &attr) == 0) {
+        return false;
+    }
 
     if(attr.height == root_attr.height) {
         return true;
@@ -123,6 +128,10 @@ bool x11_has_lockscreen(AppContext *ctx) {
 
         int attr_status = XGetWindowAttributes(ctx->x11_display, window, &attr);
         
+        if(attr_status == 0) {
+            continue;
+        }
+
         if(!x11_is_window_fullscreen(ctx, window)) {
             continue;
         }
