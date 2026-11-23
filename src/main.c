@@ -232,6 +232,8 @@ void exec_bind(AppContext *ctx, KeyBind *bind) {
     if(pid == 0) { // process is the fork
         exit(system(bind->command));
     }
+
+    signal(SIGCHLD, SIG_IGN);
 }
 
 void main_loop(AppContext *ctx) {
